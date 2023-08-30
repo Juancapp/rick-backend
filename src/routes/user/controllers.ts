@@ -73,10 +73,9 @@ const editFavoriteCharacter = async (
       (character) => character === req.body.characterId
     );
 
-    let updatedUser;
     let operation = !characterExists ? "$push" : "$pull";
 
-    updatedUser = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { _id: req.body.userId },
       { [operation]: { favoriteCharacters: req.body.characterId } },
       { new: true }
