@@ -1,5 +1,6 @@
 export enum MainRoutes {
   USER = "/user",
+  CHARACTERS = "/characters",
 }
 
 export type BodyResponse<T> = {
