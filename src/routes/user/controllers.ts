@@ -1,5 +1,3 @@
-const admin = require("firebase-admin");
-
 import { Request, Response } from "express";
 import User from "../../models/User";
 import { UserType } from "../../models/types";
@@ -59,4 +57,47 @@ const createUser = async (
   }
 };
 
-export default { createUser };
+const editFavoriteCharacter = async (
+  req: Request,
+  res: Response<{
+    message: string;
+    data: UserType | undefined;
+    error: boolean;
+  }>
+) => {
+  try {
+    if (req.body.isToAdd) {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $push: { favoriteCharacters: req.body.characterId } },
+        { new: true }
+      );
+      if (!updatedUser) throw new Error();
+      return res.status(200).json({
+        message: "Favorite character added succesfully",
+        data: updatedUser,
+        error: false,
+      });
+    } else {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $pull: { favoriteCharacters: req.body.characterId } },
+        { new: true }
+      );
+      if (!updatedUser) throw new Error();
+      return res.status(200).json({
+        message: "Favorite character deleted succesfully",
+        data: updatedUser,
+        error: false,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: `Server Error ${error}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+export default { createUser, editFavoriteCharacter };
