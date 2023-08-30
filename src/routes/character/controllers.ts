@@ -38,7 +38,6 @@ const getCharacters = async (
     let data: Character[] = response.data.results;
 
     let { sortby } = req.params || Params.name;
-    console.log("SORT BY: ", sortby);
 
     switch (sortby) {
       case Params.name:

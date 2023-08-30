@@ -73,31 +73,31 @@ const editFavoriteCharacter = async (
       (character) => character === req.body.characterId
     );
 
+    let updatedUser;
+
     if (!characterExists) {
-      const updatedUser = await User.findOneAndUpdate(
+      updatedUser = await User.findOneAndUpdate(
         { _id: req.body.userId },
         { $push: { favoriteCharacters: req.body.characterId } },
         { new: true }
       );
       if (!updatedUser) throw new Error();
-      return res.status(200).json({
-        message: "Favorite character added succesfully",
-        data: updatedUser,
-        error: false,
-      });
     } else {
-      const updatedUser = await User.findOneAndUpdate(
+      updatedUser = await User.findOneAndUpdate(
         { _id: req.body.userId },
         { $pull: { favoriteCharacters: req.body.characterId } },
         { new: true }
       );
       if (!updatedUser) throw new Error();
-      return res.status(200).json({
-        message: "Favorite character deleted succesfully",
-        data: updatedUser,
-        error: false,
-      });
     }
+
+    return res.status(200).json({
+      message: `Favorite character ${
+        !characterExists ? "added" : "deleted"
+      } succesfully`,
+      data: updatedUser,
+      error: false,
+    });
   } catch (error) {
     return res.status(500).json({
       message: `Server Error ${error}`,
