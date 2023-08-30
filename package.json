@@ -9,7 +9,7 @@
     "mongoose": "^7.5.0"
   },
   "scripts": {
-    "start": "nodemon index.ts"
+    "start": "nodemon src/index.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",
