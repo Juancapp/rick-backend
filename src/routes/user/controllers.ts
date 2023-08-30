@@ -66,7 +66,14 @@ const editFavoriteCharacter = async (
   }>
 ) => {
   try {
-    if (req.body.isToAdd) {
+    const foundUser = await User.findById(req.body.userId);
+    if (!foundUser) throw new Error();
+
+    const characterExists = foundUser.favoriteCharacters?.some(
+      (character) => character === req.body.characterId
+    );
+
+    if (!characterExists) {
       const updatedUser = await User.findOneAndUpdate(
         { _id: req.body.userId },
         { $push: { favoriteCharacters: req.body.characterId } },
