@@ -74,22 +74,15 @@ const editFavoriteCharacter = async (
     );
 
     let updatedUser;
+    let operation = !characterExists ? "$push" : "$pull";
 
-    if (!characterExists) {
-      updatedUser = await User.findOneAndUpdate(
-        { _id: req.body.userId },
-        { $push: { favoriteCharacters: req.body.characterId } },
-        { new: true }
-      );
-      if (!updatedUser) throw new Error();
-    } else {
-      updatedUser = await User.findOneAndUpdate(
-        { _id: req.body.userId },
-        { $pull: { favoriteCharacters: req.body.characterId } },
-        { new: true }
-      );
-      if (!updatedUser) throw new Error();
-    }
+    updatedUser = await User.findOneAndUpdate(
+      { _id: req.body.userId },
+      { [operation]: { favoriteCharacters: req.body.characterId } },
+      { new: true }
+    );
+
+    if (!updatedUser) throw new Error();
 
     return res.status(200).json({
       message: `Favorite character ${
