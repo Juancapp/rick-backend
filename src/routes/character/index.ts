@@ -3,6 +3,6 @@ import controllers from "./controllers";
 
 const router = express.Router();
 
-router.route("/:sortby").get(controllers.getCharacters);
+router.route("/:sortby/:page").get(controllers.getCharacters);
 
 export default router;

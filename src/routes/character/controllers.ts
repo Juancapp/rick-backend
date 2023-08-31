@@ -11,12 +11,12 @@ const getCharacters = async (
   }>
 ) => {
   try {
+    let { sortby, page } = req.params;
+
     const response = await axios.get(
-      "https://rickandmortyapi.com/api/character"
+      `https://rickandmortyapi.com/api/character/?page=${page}`
     );
     let data: Character[] = response.data.results;
-
-    let { sortby } = req.params || Params.name;
 
     switch (sortby) {
       case Params.name:

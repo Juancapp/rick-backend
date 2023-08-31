@@ -14,7 +14,7 @@ const User = new mongoose.Schema({
     type: String,
     require: true,
   },
-  favoriteCharacters: [{ type: String, required: false }],
+  favoriteCharacters: [{ type: Number, required: false }],
 });
 
 export default model<UserType>("User", User);
